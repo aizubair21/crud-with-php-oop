@@ -31,15 +31,15 @@ $key = $_SESSION["key"] ?? "";
 
             <div class="row" style="margin-top: 30px; padding:10px; ">
 
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row align-items-baseline">
 
                             <div class="col-8">
 
                                 <form action="dashboard.php" method="POST">
                                     <div class="d-flex">
-                                        <input class="form-control" type="search" name="search" id="search" placeholder="Search....">
+                                        <input class="form-control " type="search" name="search" id="search" placeholder="Search....">
                                         <input class="btn btn-info" name="submit" type="submit" value="search">
                                     </div>
                                 </form>
@@ -47,21 +47,22 @@ $key = $_SESSION["key"] ?? "";
                             </div>
 
                             <div class="col-4">
-                                <a style="float:right" class="btn btn-primary btn-nd" href="insert.php">Add New</a>
-                                <a class="btn btn-success" href="dashboard.php">Show All</a>
+                                <a style="float:right" class="btn btn-outline-primary btn-sm rounded-pill shadow-lg" href="insert.php">Add New</a>
+                                <a class="btn btn-outline-success btn-sm" href="dashboard.php">Show All</a>
                             </div>
 
                         </div>
                         <?php
                         if (isset($key)) { ?>
                             <table class="table table-striped table-hover">
-                                <thead>
+                                <thead class="shadow-lg">
                                     <tr>
                                         <th>Sl :</th>
-                                        <th>Name :</th>
-                                        <th>Email :</th>
+                                        <th>Title :</th>
                                         <th>Image :</th>
-                                        <th>Modify :</th>
+                                        <th>Author :</th>
+                                        <th>Post :</th>
+                                        <th>Modify</th>
                                     </tr>
                                 </thead>
 
@@ -69,18 +70,19 @@ $key = $_SESSION["key"] ?? "";
                                     <?php
                                     if (isset($_POST['submit'])) {
                                         $value = $_POST["search"];
-                                        $get->select([])->from('user')->where("userName like '%$value%' OR userEmail like '%$value%'");
+                                        $get->select([])->from('posts')->where("postTitle like '%$value%' OR post like '%$value%'");
                                         // $data = "SELECT * FROM crud WHERE caption like '%$value%' OR description like '%$value%'";
 
                                         $result = $get->get();
                                         while ($row = mysqli_fetch_assoc($result)) { ?>
                                             <tr>
-                                                <td><?php echo $row["userId"] ?? "Not Found !"; ?></td>
-                                                <td><?php echo $row["userName"] ?? "Not Found !"; ?></td>
-                                                <td><?php echo $row["userEmail"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["postId"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["postTitle"] ?? "Not Found !"; ?></td>
                                                 <td>
-                                                    <img width="70" src="image/<?php echo $row['image'] ?? "" ?>" alt="">
+                                                    <img width="70" src="image/<?php echo $row['postImage'] ?? "" ?>" alt="">
                                                 </td>
+                                                <td><?php echo $row["postAuthor"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["post"] ?? "Not Found !"; ?></td>
                                                 <td>
                                                     <div class="d-flex justify-content-evenly align-items-center">
                                                         <a class="btn btn-outline-primary btn-sm" href="update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>
@@ -93,16 +95,17 @@ $key = $_SESSION["key"] ?? "";
                                         <?php }
                                     } else {
                                         // $data = "SELECT * FROM crud";
-                                        $get->select([])->from('user');
+                                        $get->select([])->from('posts');
                                         $result = $get->get();
                                         while ($row = mysqli_fetch_assoc($result)) { ?>
                                             <tr>
-                                                <td><?php echo $row["userId"] ?? "Not Found !"; ?></td>
-                                                <td><?php echo $row["userName"] ?? "Not Found !"; ?></td>
-                                                <td><?php echo $row["userEmail"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["postId"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["postTitle"] ?? "Not Found !"; ?></td>
                                                 <td>
-                                                    <img width="70" src="image/<?php echo $row['image'] ?? "" ?>" alt="">
+                                                    <img width="70" src="image/<?php echo $row['postImage'] ?? "" ?>" alt="">
                                                 </td>
+                                                <td><?php echo $row["postAuthor"] ?? "Not Found !"; ?></td>
+                                                <td><?php echo $row["post"] ?? "Not Found !"; ?></td>
                                                 <td>
                                                     <div class="d-flex justify-content-evenly align-items-center">
                                                         <a class="btn btn-outline-primary btn-sm" href="update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>

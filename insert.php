@@ -1,45 +1,41 @@
 <?php
 include "nav.php";
-
+include "controller/post-controller.php";
+$post = new postControl;
 if (!$_SESSION["key"]) {
     header("location: login.php");
 }
 
 
-$caption = $_POST["caption"] ?? "";
-$description = $_POST['description'] ?? "";
-$image = $_FILES["image"]['name'] ?? "";
-
 if (isset($_POST["create"])) {
 
-    if ($_FILES["image"]['name'] != '') {
 
+    $caption = $_POST["caption"] ?? "";
+    $description = $_POST['description'] ?? "";
+    $image = $_FILES["image"]['name'] ?? "";
+    $imageErr = "";
+
+    if ($image) {
         if ($_FILES['image']['type'] == 'image/jpg' || $_FILES['image']['type'] == 'image/png' || $_FILES['image']['type'] == 'image/gif' || $_FILES['image']['type'] == 'image/jpeg') {
 
             if (move_uploaded_file($_FILES["image"]["tmp_name"], "image/" . $_FILES["image"]['name'])) {
-
-                //insert query
-
+                $post->image($image);
             } else {
-?>
-                <script>
-                    alert("Faild to upload ! !");
-                </script>
-            <?php
+                $post->imageErr = "Failed to upload. try again";
             }
         } else {
-            ?>
-            <script>
-                alert("Only jpg, png, gif, jpeg formate support !");
-            </script>
-        <?php
+            $post->imageErr = "Only jpg, png, gif, jpeg formate support !";
         }
     } else {
-        ?>
-        <script>
-            alert("Please, Select a file !");
-        </script>
-<?php
+        $post->imageErr = "Filed is required !";
+    }
+
+    $post->title($caption)->description($description);
+    $result = $post->post();
+    if ($result) {
+        header("location: dashboard.php");
+    } else {
+        echo $result;
     }
 }
 ?>
@@ -70,18 +66,21 @@ if (isset($_POST["create"])) {
                             <div>
                                 <div>
                                     <label class="form-label" for="name">File :</label>
-                                    <input type="file" name="image" id="name" class="form-control form-input">
+                                    <input type="file" name="image" id="name" class="form-control">
+                                    <?php $post->isError($post->imageErr) ?>
                                 </div>
                                 <br>
 
                                 <div>
                                     <label class="form-label" for="caption ">Caption :</label>
-                                    <input type="test" name="caption" id="caption" placeholder="Your Image caption..." class="form-control" required>
+                                    <input type="test" name="caption" id="caption" placeholder="Your Image caption..." class="form-control <?php echo ($post->titleErr) ? 'is-invalid' : "" ?> ">
+                                    <?php $post->isError($post->titleErr) ?>
                                 </div><br>
 
                                 <div>
                                     <label class="form-label" for="descrtpion ">Description :</label>
-                                    <input type="test" name="description" id="descrtpion" placeholder="Your Image descrtpion..." class="form-control">
+                                    <input type="test" name="description" id="descrtpion" placeholder="Your Image descrtpion..." class="form-control <?php echo ($post->postErr) ? 'is-invalid' : "" ?> ">
+                                    <?php $post->isError($post->postErr) ?>
                                 </div><br>
 
                                 <div class="form-check">

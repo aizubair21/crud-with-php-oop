@@ -49,9 +49,5 @@ class controller
 
             echo "<div><strong class='text text-danger'> $errorValue </strong></div>";
         }
-        if (empty($errorValue)) {
-
-            echo "<div><strong class='text text-success'> Good </strong></div>";
-        }
     }
 }

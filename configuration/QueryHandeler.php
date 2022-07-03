@@ -102,7 +102,7 @@ class DBInsert extends DB
         $insert_qry = "INSERT INTO $table ($fields) VALUES('$values')";
         // echo $insert_qry;
         if ($this->mysqli->query($insert_qry)) {
-            return "Successfully Inserted. We have recorded your data. ";
+            return 'success';
         } else {
             return "Error : " . mysqli_error($this->mysqli);
         }
