@@ -78,8 +78,11 @@ class DBSelect extends DB
         $qry = $this->select_query_builder();
         // echo $qry;
         // $data = $this->connect->query(" SELECT * FROM publisher WHERE publisherUser_name = publisher21 ");
-        $data = $this->mysqli->query($qry);
-        return $data;
+        if ($data = $this->mysqli->query($qry)) {
+            return $data;
+        } else {
+            return "You have an error in select statement";
+        }
     }
 }
 
@@ -215,7 +218,7 @@ class DBUpdate extends DB
             // // return $this->query_builder();
             // echo "success";
             $update_query = $this->update_query_builder();
-            // echo $update_query;
+            //echo $update_query;
 
             if ($this->mysqli->query($update_query)) {
                 return "success";
@@ -223,7 +226,7 @@ class DBUpdate extends DB
                 return "Error, You have an erro in Update Statement";
             }
         } else {
-            return "Please, fill give all conditon for update";
+            return "You have an error in update statement.";
         }
     }
 }

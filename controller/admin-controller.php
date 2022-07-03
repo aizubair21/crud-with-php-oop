@@ -47,8 +47,9 @@ class adminControl extends controller
             if ($result > 0) {
                 $user = mysqli_fetch_assoc($data->get());
                 if ($user['adminPassword'] == $this->password) {
-                    echo "Success";
+
                     $_SESSION['key'] = $user['adminId'];
+                    return "success";
                 } else {
                     $this->passwordErr = "Password not patched";
                 }

@@ -85,7 +85,7 @@ if (isset($_GET['delete_id'])) {
                                 <hr>
 
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <a class="btn btn-danger" href="dashboard.php">Cancel</a>
+                                    <a class="btn btn-danger" href="users.php">Cancel</a>
                                     <button name="add" class="btn btn-primary">Update </button>
                                 </div>
 

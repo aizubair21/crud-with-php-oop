@@ -16,6 +16,11 @@ if (isset($_POST["login"])) {
     $login->password($password);
 
     $result = $login->login();
+    if ($result = "success") {
+        header("location: dashboard.php");
+    } else {
+        echo $result;
+    }
 }
 
 ?>
@@ -54,7 +59,7 @@ if (isset($_POST["login"])) {
                                 </div>
 
                                 <div class="form-floating">
-                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" autocomplete="">
                                     <label for="floatingPassword">Password :</label>
                                     <?php $login->isError($login->passwordErr) ?>
                                 </div><br>

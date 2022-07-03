@@ -1,7 +1,8 @@
 <?php
 
 require "nav.php";
-include "configuration/QueryHandeler.php";
+// include "configuration/QueryHandeler.php";
+include "controller/post-controller.php";
 $get = new DBSelect;
 
 if (!isset($_SESSION["key"])) {
@@ -10,6 +11,13 @@ if (!isset($_SESSION["key"])) {
 
 $key = $_SESSION["key"] ?? "";
 
+//post delete
+$obj = new postControl;
+if (isset($_GET["delete_id"])) {
+    $delete_id = $_GET['delete_id'];
+    $response = $obj->delete($delete_id);
+    echo $response;
+}
 
 ?>
 
@@ -47,7 +55,7 @@ $key = $_SESSION["key"] ?? "";
                             </div>
 
                             <div class="col-4">
-                                <a style="float:right" class="btn btn-outline-primary btn-sm rounded-pill shadow-lg" href="insert.php">Add New</a>
+                                <a style="float:right" class="btn btn-outline-primary btn-sm rounded-pill shadow" href="insert.php">Add New</a>
                                 <a class="btn btn-outline-success btn-sm" href="dashboard.php">Show All</a>
                             </div>
 
@@ -55,7 +63,7 @@ $key = $_SESSION["key"] ?? "";
                         <?php
                         if (isset($key)) { ?>
                             <table class="table table-striped table-hover">
-                                <thead class="shadow-lg">
+                                <thead class="">
                                     <tr>
                                         <th>Sl :</th>
                                         <th>Title :</th>
@@ -85,8 +93,8 @@ $key = $_SESSION["key"] ?? "";
                                                 <td><?php echo $row["post"] ?? "Not Found !"; ?></td>
                                                 <td>
                                                     <div class="d-flex justify-content-evenly align-items-center">
-                                                        <a class="btn btn-outline-primary btn-sm" href="update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>
-                                                        <form action="delete.php?id=<?php echo $row['id'] ?>" method="POST" enctype="multipart/form-data">
+                                                        <a class="btn btn-outline-primary btn-sm" href="post.update.php?uid=<?php echo $row["postId"] ?>"><i class="fas fa-pen"></i></a>
+                                                        <form action="dashboard.php?delete_id=<?php echo $row['postId'] ?>" method="GET" enctype="multipart/form-data">
                                                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                                         </form>
                                                     </div>
@@ -108,8 +116,8 @@ $key = $_SESSION["key"] ?? "";
                                                 <td><?php echo $row["post"] ?? "Not Found !"; ?></td>
                                                 <td>
                                                     <div class="d-flex justify-content-evenly align-items-center">
-                                                        <a class="btn btn-outline-primary btn-sm" href="update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>
-                                                        <form action="delete.php?id=<?php echo $row['id'] ?>" method="POST" enctype="multipart/form-data">
+                                                        <a class="btn btn-outline-primary btn-sm" href="post.update.php?uid=<?php echo $row["postId"] ?>"><i class="fas fa-pen"></i></a>
+                                                        <form action="dashboard.php?delete_id=<?php echo $row['postId'] ?>" method="POST" enctype="multipart/form-data">
                                                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
                                                         </form>
                                                     </div>

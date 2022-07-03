@@ -41,6 +41,13 @@ class postControl extends controller
         $this->required($passwordConfirm, 'passwordConfirm');
     }
 
+    public function id($id)
+    {
+        $this->id = $id;
+    }
+
+
+    //post posted
     public function post()
     {
         if (empty($this->titleErr) && empty($this->imageErr) && empty($this->authorErr) && empty($this->postErr)) {
@@ -51,4 +58,38 @@ class postControl extends controller
             return false;
         }
     }
+
+
+    //update data 
+    public function update($updateId)
+    {
+        if (empty($this->titleErr) && empty($this->imageErr) && empty($this->authorErr) && empty($this->postErr)) {
+            $data = new DBUpdate;
+            $data->on('posts')->set(['postTitle', 'post', 'postImage'])->value([$this->title, $this->post, $this->image])->where("postId = '$updateId'");
+
+            $response = $data->go();
+            return $response;
+        } else {
+            return false;
+        }
+    }
+
+
+    //delete
+    public function delete($id)
+    {
+        $delete = new DBDelete;
+        $delete->from('posts')->where("postId = '$id'");
+        $result = $delete->go();
+        return $result;
+    }
 }
+
+// $obj = new postControl;
+// if (isset($_GET["delete_id"])) {
+//     $delete_id = $_GET['delete_id'];
+//     $response = $obj->delete($delte_id);
+//     if ($response == 'success') {
+//         header("location: users.php");
+//     }
+// }

@@ -8,7 +8,7 @@ if (isset($_POST['add'])) {
     $user->phone($_POST['username']);
 
     $response = $user->add();
-    if ($response = 'success') {
+    if ($response == 'success') {
         header("location: users.php");
     } else {
         echo $response;
@@ -66,7 +66,7 @@ if (isset($_POST['add'])) {
                                 <hr>
 
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <a class="btn btn-danger" href="dashboard.php">Cancel</a>
+                                    <a class="btn btn-danger" href="users.php">Cancel</a>
                                     <button name="add" class="btn btn-primary">Add New</button>
                                 </div>
 

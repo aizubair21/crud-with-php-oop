@@ -51,7 +51,7 @@ class userControl extends controller
             return $response;
             echo $response;
         } else {
-            return "false";
+            return "Fill all required fields.";
         }
     }
 

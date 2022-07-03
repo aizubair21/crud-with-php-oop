@@ -1,7 +1,7 @@
 <?php
 
 include "nav.php";
-
+include "configuration/QueryHandeler.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,8 +61,9 @@ include "nav.php";
         </div>
         <div class="row">
             <?php
-
-            while ($row = mysqli_fetch_assoc($result)) {
+            $data = new DBSelect;
+            $result = $data->select([])->from('posts')->get();
+            while ($row = $result->fetch_assoc()) {
             ?>
 
                 <div class="col-3 mb-3">
@@ -71,13 +72,13 @@ include "nav.php";
                             <div style="color:white; padding:15px;text-align:center">
                                 <strong>Today</strong>
                                 <hr>
-                                <a href="download.php?img=<?php echo $row['image'] ?>" name="down" class="down_btn"><i class="fas fa-download"></i></a>
+                                <a href="download.php?img=<?php echo $row['postImage'] ?>" name="down" class="down_btn"><i class="fas fa-download"></i></a>
                             </div>
                         </div>
-                        <img style="width: 100%; height:220px" src="image/<?php echo $row['image'] ?>" alt="not fount">
+                        <img style="width: 100%; height:220px" src="image/<?php echo $row['postImage'] ?>" alt="not fount">
                         <div class="card-body bg-info">
-                            <strong class="card-title"><?php echo $row['caption'] ?></strong>
-                            <p class="card-text"><?php echo $row['description'] ?></p>
+                            <strong class="card-title"><?php echo $row['postTitle'] ?></strong>
+                            <p class="card-text"><?php echo $row['post'] ?></p>
                         </div>
                     </div>
                 </div>
