@@ -60,7 +60,7 @@ if (isset($_POST["create"])) {
         <div class="row">
             <div class="col-4"></div>
             <div class="col-4">
-                <div class="card">
+                <div class="card shadow-lg">
                     <div class="bg-primary text-white p-3" style="font-size:20px; text-align:center; font-weight:bold">
                         Insert Data
                     </div>

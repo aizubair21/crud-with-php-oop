@@ -43,6 +43,18 @@ class adminControl extends controller
         if (empty($this->nameErr) && empty($this->userNameErr) && empty($this->emailErr) && empty($this->passwordErr)) {
             $data = new DBSelect;
             $data->select([])->from('admin')->where("adminEmail = '$this->email'");
+            $result = $data->get()->num_rows;
+            if ($result > 0) {
+                $user = mysqli_fetch_assoc($data->get());
+                if ($user['adminPassword'] == $this->password) {
+                    echo "Success";
+                    $_SESSION['key'] = $user['adminId'];
+                } else {
+                    $this->passwordErr = "Password not patched";
+                }
+            } else {
+                $this->emailErr = "No data found associated this email";
+            }
         } else {
             return false;
         }
