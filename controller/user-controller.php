@@ -54,14 +54,27 @@ class userControl extends controller
             return "false";
         }
     }
+
+    //update
     public function update()
     {
-        if (empty($this->nameErr) && empty($this->phoneErr) && empty($this->emailErr) && empty($this->id)) {
+        if (empty($this->nameErr) && empty($this->phoneErr) && empty($this->emailErr) && !empty($this->id)) {
 
             $update = new DBUpdate;
-            $update->on('user')->set(['userName', 'userEmail', 'userPhone'], [$this->name, $this->email, $this->phone])->where("id = '$this->id");
+            $update->on('user')->set(['userName', 'userEmail', 'userPhone'])->value([$this->name, $this->email, $this->phone])->where("userId = $this->id");
+            $response = $update->go();
+            echo $response;
         } else {
             return false;
         }
+    }
+
+    //delete
+    public function delete($id)
+    {
+        $del = new DBDelete;
+        $del->from('user')->where("userId = '$id'");
+        $response = $del->go();
+        return $response;
     }
 }

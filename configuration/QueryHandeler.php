@@ -217,10 +217,13 @@ class DBUpdate extends DB
             $update_query = $this->update_query_builder();
             // echo $update_query;
 
-            $this->mysqli->query($update_query);
-            return "success";
+            if ($this->mysqli->query($update_query)) {
+                return "success";
+            } else {
+                return "Error, You have an erro in Update Statement";
+            }
         } else {
-            return $this->mysqli->connect_error;
+            return "Please, fill give all conditon for update";
         }
     }
 }
@@ -261,7 +264,7 @@ class DBDelete extends DB
             if ($result) {
                 return "success";
             } else {
-                return $this->mysqli->connect_error;
+                return "You have an error in Delete statement";
             }
         }
     }

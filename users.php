@@ -3,10 +3,16 @@
 require "nav.php";
 include "configuration/QueryHandeler.php";
 $get = new DBSelect;
+$del = new DBDelete;
 
 if (!isset($_SESSION["key"])) {
     header("location: login.php");
 }
+
+if (isset($_GET['delete_id'])) {
+    echo $_GET['delete_id'];
+}
+
 if (["verify_at"] ==  NULL) { ?>
 
     <div class="container">
@@ -97,9 +103,7 @@ if (["verify_at"] ==  NULL) { ?>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <a class="btn btn-primary btn-sm" href="user.update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>
-                                                            <form action="delete.php?id=<?php echo $row['id'] ?>" method="POST" enctype="multipart/form-data">
-                                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                                            </form>
+                                                            <a class="btn btn-outline-danger btn-sm " href="user.update.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -116,9 +120,7 @@ if (["verify_at"] ==  NULL) { ?>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <a class="btn btn-outline-primary btn-sm" href="user.update.php?id=<?php echo $row["userId"] ?>"><i class="fas fa-pen"></i></a>
-                                                            <form action="delete.php?Id=<?php echo $row['userId'] ?>" method="POST" enctype="multipart/form-data">
-                                                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                                            </form>
+                                                            <a class="btn btn-outline-danger btn-sm " href="user.update.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
                                                         </div>
                                                     </td>
                                                 </tr>

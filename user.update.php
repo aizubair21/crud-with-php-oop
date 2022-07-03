@@ -3,26 +3,37 @@ require "nav.php";
 include "controller/user-controller.php";
 $user = new userControl;
 
-$id = $_GET["id"];
-echo $id;
+$id = $_GET["id"] ?? "";
+// echo $id;
 if (isset($_POST['add'])) {
     $user->name($_POST['name']);
     $user->email($_POST['email']);
     $user->phone($_POST['username']);
-    $user->id($id);
+    $user->id($_POST['id']);
+    $uid = $_POST['id'];
 
-    $user->$response = $user->update();
+    $response = $user->update();
     if ($response = 'success') {
         header("location: users.php");
     } else {
         echo $response;
+        header("location: user.update.php?id = $uid");
     }
 }
 
+//get singl data form server 
 $get_user = new DBSelect;
 $get_user->select([])->from('user')->where("userId = '$id'");
 $result = $get_user->get();
-$row = mysqli_fetch_assoc($result);
+$row = $result->fetch_assoc();
+
+
+//delete 
+if (isset($_GET['delete_id'])) {
+    $d_id = $_GET['delete_id'];
+    $user->delete($d_id);
+    header("location: users.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +42,7 @@ $row = mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert Data - Nww data insert to database</title>
+    <title>Insert Data - New data insert to database</title>
 </head>
 
 <body style="background-color: rgba(0,0,0,.1);">
@@ -47,8 +58,7 @@ $row = mysqli_fetch_assoc($result);
 
                         <form action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"])) ?>" method="post" enctype="multipart/form-data">
                             <div>
-                                <input type="hidden" name="id" value=''>
-
+                                <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
                                 <div>
                                     <label class="form-label" for="name ">Name :</label>
                                     <input type="text" name="name" id="name" placeholder="Your Image name..." value="<?php echo $row['userName'] ?>" class="form-control <?php echo ($user->nameErr) ? 'is-invalid' : "" ?> ">
@@ -76,7 +86,7 @@ $row = mysqli_fetch_assoc($result);
 
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <a class="btn btn-danger" href="dashboard.php">Cancel</a>
-                                    <button name="add" class="btn btn-primary">Add New</button>
+                                    <button name="add" class="btn btn-primary">Update </button>
                                 </div>
 
                         </form>
