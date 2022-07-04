@@ -33,30 +33,31 @@ if (isset($_POST["submit"])) {
     //get id from input
     $uid = $_POST['update_id'] ?? "";
 
-    //if i chose an another image
+    $post->image($image);
+    $post->title($caption);
+    $post->description($description);
+
+    //if image updte , upload into database, and delete old image from database.
     if ($_FILES['image']['name']) {
-
         if (move_uploaded_file($_FILES["image"]["tmp_name"], "image/" . $_FILES["image"]['name'])) {
-
-            //if image updte , send with update image
-            $post->title($caption);
-            $post->description($description);
-            $post->image($image);
             @unlink('image/' . $row["image"]);
         }
-    } else {
-
-        //if image not change. send controller with previous image;
-        $post->title($caption);
-        $post->description($description);
-        $post->image($row['postImage']);
     }
 
+    //then update the post
     $response = $post->update($id);
     if ($response = "success") {
-        header("location: dashboard.php");
+?>
+        <script>
+            swal("Success.", "Post Successfully updated", "success");
+        </script>
+    <?php
     } else {
-        echo $response;
+    ?>
+        <script>
+            swal("Warning!.", <?php echo $response ?>, "warning");
+        </script>
+<?php
     }
 }
 

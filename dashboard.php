@@ -16,7 +16,23 @@ $obj = new postControl;
 if (isset($_GET["delete_id"])) {
     $delete_id = $_GET['delete_id'];
     $response = $obj->delete($delete_id);
-    echo $response;
+    if ($response == "success") {
+?>
+        <script>
+            swal("Success!", "You delete you post.", "success");
+        </script>
+    <?php
+    } else {
+    ?>
+        <script>
+            swal("Warning!", <?php echo $response ?>, "alert");
+        </script>
+<?php
+    }
+
+    // $delete_id = $_GET['delete_id'];
+    // $response = $obj->delete($delete_id);
+    // echo $response;
 }
 
 ?>

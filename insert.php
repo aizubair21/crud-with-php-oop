@@ -6,14 +6,14 @@ if (!$_SESSION["key"]) {
     header("location: login.php");
 }
 
+$caption = $_POST["caption"] ?? "";
+$description = $_POST['description'] ?? "";
+$image = $_FILES["image"]['name'] ?? "";
+$imageErr = "";
 
 if (isset($_POST["create"])) {
 
 
-    $caption = $_POST["caption"] ?? "";
-    $description = $_POST['description'] ?? "";
-    $image = $_FILES["image"]['name'] ?? "";
-    $imageErr = "";
 
     if ($image) {
         if ($_FILES['image']['type'] == 'image/jpg' || $_FILES['image']['type'] == 'image/png' || $_FILES['image']['type'] == 'image/gif' || $_FILES['image']['type'] == 'image/jpeg') {
@@ -33,9 +33,19 @@ if (isset($_POST["create"])) {
     $post->title($caption)->description($description);
     $result = $post->post();
     if ($result) {
-        header("location: dashboard.php");
+?>
+        <script>
+            swal("Well Done!", "Your Post Successfully Added", "success");
+        </script>
+    <?php
+        $caption = '';
+        $description = '';
     } else {
-        echo $result;
+    ?>
+        <script>
+            swal("Something Wrong !", <?php echo $result ?>, "Alert");
+        </script>
+<?php
     }
 }
 ?>
@@ -66,20 +76,20 @@ if (isset($_POST["create"])) {
                             <div>
                                 <div>
                                     <label class="form-label" for="name">File :</label>
-                                    <input type="file" name="image" id="name" class="form-control">
+                                    <input type="file" name="image" id="name" value="<?php echo $image ?>" class="form-control">
                                     <?php $post->isError($post->imageErr) ?>
                                 </div>
                                 <br>
 
                                 <div>
                                     <label class="form-label" for="caption ">Caption :</label>
-                                    <input type="test" name="caption" id="caption" placeholder="Your Image caption..." class="form-control <?php echo ($post->titleErr) ? 'is-invalid' : "" ?> ">
+                                    <input type="test" name="caption" id="caption" placeholder="Your Image caption..." value="<?php echo $caption ?>" class="form-control <?php echo ($post->titleErr) ? 'is-invalid' : "" ?> ">
                                     <?php $post->isError($post->titleErr) ?>
                                 </div><br>
 
                                 <div>
                                     <label class="form-label" for="descrtpion ">Description :</label>
-                                    <input type="test" name="description" id="descrtpion" placeholder="Your Image descrtpion..." class="form-control <?php echo ($post->postErr) ? 'is-invalid' : "" ?> ">
+                                    <input type="test" name="description" id="descrtpion" placeholder="Your Image descrtpion..." value="<?php echo $description ?>" class="form-control <?php echo ($post->postErr) ? 'is-invalid' : "" ?> ">
                                     <?php $post->isError($post->postErr) ?>
                                 </div><br>
 

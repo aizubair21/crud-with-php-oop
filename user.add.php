@@ -9,9 +9,18 @@ if (isset($_POST['add'])) {
 
     $response = $user->add();
     if ($response == 'success') {
-        header("location: users.php");
+?>
+        <script>
+            swal("Well Done!", "User Successfully added!", "success");
+        </script>
+    <?php
     } else {
-        echo $response;
+    ?>
+        <script>
+            swal("Error !", <?php echo $response; ?>, "alert");
+        </script>
+<?php
+
     }
 }
 

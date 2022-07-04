@@ -109,6 +109,8 @@ function isActive($modifier)
 
     <script src="bootstrap-5.1.0-dist/js/bootstrap.min.js"></script>
     <script src="bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
 
     </script>

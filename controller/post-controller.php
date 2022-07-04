@@ -63,14 +63,22 @@ class postControl extends controller
     //update data 
     public function update($updateId)
     {
-        if (empty($this->titleErr) && empty($this->imageErr) && empty($this->authorErr) && empty($this->postErr)) {
+        $response = '';
+        if (empty($this->titleErr) && (empty($this->imageErr) && !empty($this->image)) && empty($this->authorErr) && empty($this->postErr)) {
+
             $data = new DBUpdate;
             $data->on('posts')->set(['postTitle', 'post', 'postImage'])->value([$this->title, $this->post, $this->image])->where("postId = '$updateId'");
-
             $response = $data->go();
+
+            return $response;
+        } elseif (empty($this->titleErr) && (empty($this->imageErr) && empty($this->image)) && empty($this->authorErr) && empty($this->postErr)) {
+            $data = new DBUpdate;
+            $data->on('posts')->set(['postTitle', 'post'])->value([$this->title, $this->post])->where("postId = '$updateId'");
+            $response = $data->go();
+
             return $response;
         } else {
-            return false;
+            return "Something Wrong in your query";
         }
     }
 

@@ -43,6 +43,7 @@ class userControl extends controller
         $this->id = $id;
     }
 
+    //user insert. this method call from user.add.php file
     public function add()
     {
         if (empty($this->nameErr) && empty($this->userNameErr) && empty($this->emailErr) && empty($this->passwordErr)) {
@@ -63,7 +64,7 @@ class userControl extends controller
             $update = new DBUpdate;
             $update->on('user')->set(['userName', 'userEmail', 'userPhone'])->value([$this->name, $this->email, $this->phone])->where("userId = $this->id");
             $response = $update->go();
-            echo $response;
+            return $response;
         } else {
             return false;
         }

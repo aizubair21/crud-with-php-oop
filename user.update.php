@@ -3,7 +3,12 @@ require "nav.php";
 include "controller/user-controller.php";
 $user = new userControl;
 
-$id = $_GET["id"] ?? "";
+if (isset($_GET['id'])) {
+    $id = $_GET["id"] ?? "";
+    # code...
+} else {
+    header("location: users.php");
+}
 // echo $id;
 if (isset($_POST['add'])) {
     $user->name($_POST['name']);
@@ -14,9 +19,18 @@ if (isset($_POST['add'])) {
 
     $response = $user->update();
     if ($response = 'success') {
-        header("location: users.php");
+?>
+        <script>
+            swal("Well Done !", "User info has been updated.", "success");
+        </script>
+    <?php
     } else {
-        echo $response;
+
+    ?>
+        <script>
+            swal("Attendtion !", <?php echo $response; ?>, "alert");
+        </script>
+<?php
         header("location: user.update.php?id = $uid");
     }
 }
