@@ -10,6 +10,8 @@ if (isset($_GET['id'])) {
     header("location: users.php");
 }
 // echo $id;
+
+//update data
 if (isset($_POST['add'])) {
     $user->name($_POST['name']);
     $user->email($_POST['email']);
@@ -17,22 +19,12 @@ if (isset($_POST['add'])) {
     $user->id($_POST['id']);
     $uid = $_POST['id'];
 
-    $response = $user->update();
-    if ($response = 'success') {
+    $response = $user->update($uid);
 ?>
-        <script>
-            swal("Well Done !", "User info has been updated.", "success");
-        </script>
-    <?php
-    } else {
-
-    ?>
-        <script>
-            swal("Attendtion !", <?php echo $response; ?>, "alert");
-        </script>
+    <script>
+        swal(<?php echo $response ?>);
+    </script>
 <?php
-        header("location: user.update.php?id = $uid");
-    }
 }
 
 //get singl data form server 
@@ -42,12 +34,7 @@ $result = $get_user->get();
 $row = $result->fetch_assoc();
 
 
-//delete 
-if (isset($_GET['delete_id'])) {
-    $d_id = $_GET['delete_id'];
-    $user->delete($d_id);
-    header("location: users.php");
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

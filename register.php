@@ -22,7 +22,7 @@ if (isset($_POST['register'])) {
     $userName = $_POST["user_name"];
     $email = $_POST["email"];
     $phone = $_POST["phone"];
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
 
     $register->name($name);
     $register->userName($userName);
@@ -31,10 +31,16 @@ if (isset($_POST['register'])) {
     $register->password($password);
 
     //register query 
-    $register->register();
+    $response = $register->register();
+    if ($response == 'success') {
+        $_SESSION['register'] = 'success';
+    }
 }
 
 ?>
+<script>
+    swal(<?php echo $response ?>, "alert");
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,25 +66,30 @@ if (isset($_POST['register'])) {
                         <div class="bg-primary text-white py-4 fw-bolder fs-2 text-center">
                             register as new
                         </div>
+
                         <?php if (isset($_SESSION['register'])) { ?>
                             <div class="alert alert-success">
                                 <p>Register success. <a href="login.php">Login Now</a></p>
                             </div>
                         <?php } else { ?>
 
+                            <div class="alert alert-warning w-100 p-2 fw-bolder fs-6">
+                                <?php echo (isset($response)) ? $response : ""; ?>
+                            </div>
+
 
                             <div class="card-body">
 
-                                <form action="register.php" method="post" enctype="multipart/form-data">
+                                <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
                                     <div class="input-group d-flex justify-content-between ">
                                         <div>
                                             <label class="form-label" for="name">Name :</label>
-                                            <input type="text" name="name" id="name" placeholder="Your Name..." class="form-control form-input" autofocus value="<?php echo $name ?? '' ?>">
+                                            <input type="text" name="name" id="name" placeholder="Your Name..." class="form-control form-input <?php echo ($register->nameErr) ? "is-invalid" : '' ?> " autofocus value="<?php echo $name ?? '' ?>">
                                             <?php $register->isError($register->nameErr) ?>
                                         </div><br>
                                         <div>
                                             <label class="form-label" for="user_name">User Name :</label>
-                                            <input type="text" name="user_name" id="user_name" placeholder="Your username name..." class="form-control form-input" value="<?php echo $user_name ?? '' ?>">
+                                            <input type="text" name="user_name" id="user_name" placeholder="Your username name..." class="form-control form-input <?php echo ($register->userNameErr) ? "is-invalid" : '' ?>" value="<?php echo $userName ?? '' ?>">
                                             <?php $register->isError($register->userNameErr) ?>
 
                                         </div>
@@ -86,20 +97,20 @@ if (isset($_POST['register'])) {
                                     <br>
                                     <div>
                                         <label class="form-label" for="email ">Email :</label>
-                                        <input type="email" name="email" id="email" placeholder="Your emaail..." class="form-control form-input" value="<?php echo $email ?? '' ?>">
+                                        <input type="email" name="email" id="email" placeholder="Your emaail..." class="form-control form-input <?php echo ($register->emailErr) ? "is-invalid" : '' ?>" value="<?php echo $email ?? '' ?>">
                                         <?php $register->isError($register->emailErr) ?>
                                     </div>
                                     <br>
                                     <div>
                                         <label class="form-label" for="phone">Phone :</label>
-                                        <input type="phone" name="phone" id="phone" placeholder="Your phone number..." class="form-control form-input" value="<?php echo $phone ?? '' ?>">
+                                        <input type="phone" name="phone" id="phone" placeholder="Your phone number..." class="form-control form-input <?php echo ($register->phoneErr) ? "is-invalid" : '' ?>" value="<?php echo $phone ?? '' ?>">
                                         <?php $register->isError($register->phoneErr) ?>
                                     </div>
                                     <br>
 
                                     <div>
                                         <label class="form-label" for="Password">password :</label>
-                                        <input type="password" name="password" id="password" placeholder="Your password..." class="form-control form-input">
+                                        <input type="password" name="password" id="password" placeholder="Your password..." class="form-control form-input <?php echo ($register->passwordErr) ? "is-invalid" : '' ?>">
                                         <?php $register->isError($register->passwordErr) ?>
                                     </div><br>
 

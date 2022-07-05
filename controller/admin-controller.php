@@ -1,12 +1,16 @@
 <?php
-require "configuration/controller.php";
-require "configuration/QueryHandeler.php";
+include "configuration/controller.php";
+include "configuration/QueryHandeler.php";
 
 class adminControl extends controller
 {
     protected $name, $userName, $email, $phone, $password, $passwordConfirm;
     public $nameErr, $userNameErr, $emailErr, $phoneErr, $passwordErr;
 
+    public function __set($property, $value)
+    {
+        $this->{$property} = $value;
+    }
     public function name($name)
     {
         $this->name = $name;
@@ -16,6 +20,7 @@ class adminControl extends controller
     {
         $this->userName = $userName;
         $this->required($userName, 'userNameErr');
+        $this->unique($userName, 'admin', 'adminUser_name', "userNameErr");
     }
     public function email($email)
     {
@@ -38,35 +43,49 @@ class adminControl extends controller
         $this->required($passwordConfirm, 'passwordConfirm');
     }
 
+    //logoin
     public function login()
     {
+        // echo $this->email;
         if (empty($this->nameErr) && empty($this->userNameErr) && empty($this->emailErr) && empty($this->passwordErr)) {
             $data = new DBSelect;
             $data->select([])->from('admin')->where("adminEmail = '$this->email'");
             $result = $data->get()->num_rows;
+
             if ($result > 0) {
-                $user = mysqli_fetch_assoc($data->get());
-                if ($user['adminPassword'] == $this->password) {
+                $user = $data->get()->fetch_assoc();
+                if (password_verify($this->password, $user['adminPassword'])) {
 
                     $_SESSION['key'] = $user['adminId'];
+                    header("location: index.php");
                     return "success";
                 } else {
-                    $this->passwordErr = "Password not patched";
+                    $this->passwordErr = "Password not matched";
                 }
             } else {
                 $this->emailErr = "No data found associated this email";
             }
         } else {
-            return false;
+            return "Please, fill up all required field !";
         }
     }
+
+    //register matod
     public function register()
     {
-        if (empty($this->nameErr) && empty($this->userNameErr) && empty($this->emailErr) && empty($this->passwordErr)) {
+
+        if (empty($this->nameErr) && empty($this->userNameErr) && (empty($this->emailErr) && !empty($this->email)) && (empty($this->passwordErr) && !empty($this->password))) {
             // $data = new DBSelect;
             // $data->select([])->from('admin')->where("adminEmail = '$this->email'");
+
+            $sign = new DBInsert;
+
+            $password = password_hash($this->password, PASSWORD_DEFAULT);
+            $response = $sign->insert('admin', ['adminName', 'adminEmail', 'adminUser_name', 'adminPhone', 'adminPassword'], [$this->name, $this->email, $this->userName, $this->phone, $password]);
+            return $response;
+            echo $response;
         } else {
-            return false;
+            return "Warning ! please fill all required filed.";
         }
     }
 }

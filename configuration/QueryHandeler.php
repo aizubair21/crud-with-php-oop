@@ -107,7 +107,8 @@ class DBInsert extends DB
         if ($this->mysqli->query($insert_qry)) {
             return 'success';
         } else {
-            return "Error : " . mysqli_error($this->mysqli);
+            // return "Error : " . mysqli_error($this->mysqli);
+            return "You have an error in your mysqli statement";
         }
     }
 }
@@ -218,7 +219,7 @@ class DBUpdate extends DB
             // // return $this->query_builder();
             // echo "success";
             $update_query = $this->update_query_builder();
-            //echo $update_query;
+            // echo $update_query;
 
             if ($this->mysqli->query($update_query)) {
                 return "success";

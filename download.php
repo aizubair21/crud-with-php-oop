@@ -1,25 +1,22 @@
 <?php
-require "connection.php";
 
-
-
-$img =$_REQUEST['img'];
+$img = $_REQUEST['img'];
 $file_url = $_GET["img"];
 
-if(isset($_REQUEST["img"])){
+if (isset($_REQUEST["img"])) {
     // Get parameters
     $file = $_REQUEST["img"]; // Decode URL-encoded string
 
     /* Test whether the file name contains illegal characters
     such as "../" using the regular expression */
-    if(preg_match('/^[^.][-a-z0-9_.]+[a-z]$/i', $file)){
+    if (preg_match('/^[^.][-a-z0-9_.]+[a-z]$/i', $file)) {
         $filepath = "image/" . $file;
 
         // Process download
-        if(file_exists($filepath)) {
+        if (file_exists($filepath)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+            header('Content-Disposition: attachment; filename="' . basename($filepath) . '"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
@@ -29,7 +26,7 @@ if(isset($_REQUEST["img"])){
             die();
         } else {
             http_response_code(404);
-	        die();
+            die();
         }
     } else {
         die("Invalid file name!");

@@ -1,16 +1,25 @@
 <?php
 
 require "nav.php";
-include "configuration/QueryHandeler.php";
+
+include "controller/user-controller.php";
 $get = new DBSelect;
 $del = new DBDelete;
+$user = new userControl;
 
 if (!isset($_SESSION["key"])) {
     header("location: login.php");
 }
 
+//delete 
 if (isset($_GET['delete_id'])) {
-    echo $_GET['delete_id'];
+    $d_id = $_GET['delete_id'];
+    $user->delete($d_id);
+?>
+    <script>
+        swal('Successfully Deleted !', 'User are not longer now!', 'success');
+    </script>
+<?php
 }
 
 if (["verify_at"] ==  NULL) { ?>
@@ -62,7 +71,7 @@ if (["verify_at"] ==  NULL) { ?>
 
                                     <form action="users.php" method="POST">
                                         <div class="d-flex">
-                                            <input class="form-control shadow" type="search" name="search" id="search" placeholder="username or email....">
+                                            <input class="form-control" type="search" name="search" id="search" placeholder="username or email....">
                                             <input class="btn btn-info" name="submit" type="submit" value="search">
                                         </div>
                                     </form>
@@ -103,7 +112,7 @@ if (["verify_at"] ==  NULL) { ?>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <a class="btn btn-primary btn-sm" href="user.update.php?uid=<?php echo $row["id"] ?>"><i class="fas fa-pen"></i></a>
-                                                            <a class="btn btn-outline-danger btn-sm " href="user.update.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
+                                                            <a class="btn btn-outline-danger btn-sm " href="users.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -120,7 +129,7 @@ if (["verify_at"] ==  NULL) { ?>
                                                     <td>
                                                         <div class="d-flex justify-content-center align-items-center">
                                                             <a class="btn btn-outline-primary btn-sm" href="user.update.php?id=<?php echo $row["userId"] ?>"><i class="fas fa-pen"></i></a>
-                                                            <a class="btn btn-outline-danger btn-sm " href="user.update.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
+                                                            <a class="btn btn-outline-danger btn-sm " href="users.php?delete_id=<?php echo $row['userId'] ?>"> <i class="fas fa-trash"></i> </a>
                                                         </div>
                                                     </td>
                                                 </tr>

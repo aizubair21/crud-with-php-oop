@@ -57,12 +57,12 @@ class userControl extends controller
     }
 
     //update
-    public function update()
+    public function update($id)
     {
         if (empty($this->nameErr) && empty($this->phoneErr) && empty($this->emailErr) && !empty($this->id)) {
 
             $update = new DBUpdate;
-            $update->on('user')->set(['userName', 'userEmail', 'userPhone'])->value([$this->name, $this->email, $this->phone])->where("userId = $this->id");
+            $update->on('user')->set(['userName', 'userEmail', 'userPhone'])->value([$this->name, $this->email, $this->phone])->where("userId = '$id'");
             $response = $update->go();
             return $response;
         } else {

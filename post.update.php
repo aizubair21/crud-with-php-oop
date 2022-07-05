@@ -4,6 +4,7 @@ include "controller/post-controller.php";
 
 // oop class object
 $get = new DBSelect;
+
 // $set = new DBInsert;
 $post = new postControl;
 
@@ -24,15 +25,25 @@ $row = $get->get()->fetch_assoc();
 //get input value
 $caption = $_POST["caption"] ?? "";
 $description = $_POST['description'] ?? "";
-$image = $_FILES["image"]['name'] ?? "";
 
 
-
+//if click into update button
 if (isset($_POST["submit"])) {
+
+
+    //is image update or not
+    $image = '';
+    if ($_FILES['image']['name']) {
+        //if image update. get the new image
+        $image = $_FILES["image"]['name'] ?? "";
+    } else {
+        //if now. set the previous image value;
+        $image = $row['postImage'];
+    }
+
 
     //get id from input
     $uid = $_POST['update_id'] ?? "";
-
     $post->image($image);
     $post->title($caption);
     $post->description($description);
@@ -40,7 +51,7 @@ if (isset($_POST["submit"])) {
     //if image updte , upload into database, and delete old image from database.
     if ($_FILES['image']['name']) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], "image/" . $_FILES["image"]['name'])) {
-            @unlink('image/' . $row["image"]);
+            unlink('image/' . $row["postImage"]);
         }
     }
 

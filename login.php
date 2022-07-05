@@ -1,26 +1,32 @@
 <?php
+
 include "nav.php";
 include "controller/admin-controller.php";
-$login = new adminControl;
+$signup = new adminControl;
+
 
 if (isset($_SESSION['key'])) {
     header("location: welcome.php");
 }
 
+$email = $_POST['email'] ?? "";
+$password = $_POST['password'] ?? "";
+$signup->email($email);
+$signup->password($password);
 
-if (isset($_POST["login"])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+$result = $signup->login();
+if ($result == 'success') {
+    header("locaiton: index.php");
+}
 
-    $login->email($email);
-    $login->password($password);
+//
+// print_r($signup);
+// echo "<pre>";
+// print_r($_POST);
+// echo "</pre>";
+//
 
-    $result = $login->login();
-    if ($result = "success") {
-        header("location: dashboard.php");
-    } else {
-        echo $result;
-    }
+if (isset($_POST["Login"])) {
 }
 
 ?>
@@ -32,7 +38,7 @@ if (isset($_POST["login"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Loin - OOP Crud</title>
 </head>
 
 <body>
@@ -53,24 +59,21 @@ if (isset($_POST["login"])) {
                             <div class="card-body">
                                 <div class="form-floating mb-3">
 
-                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                                    <input type="text" class="form-control <?php echo ($signup->emailErr) ? "is-invalid" : "" ?>" id="floatingInput" placeholder="name@example.com" name="email">
                                     <label for="floatingInput">Email :</label>
-                                    <?php $login->isError($login->emailErr) ?>
+                                    <?php $signup->isError($signup->emailErr) ?>
                                 </div>
 
                                 <div class="form-floating">
                                     <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" autocomplete="">
                                     <label for="floatingPassword">Password :</label>
-                                    <?php $login->isError($login->passwordErr) ?>
+                                    <?php $signup->isError($signup->passwordErr) ?>
                                 </div><br>
 
-                                <div>
-                                    <button class="btn btn-outline-primary btn-lg rounded shadow-lg " name="login" type="submit">Login</button>
-                                    <!-- </div> -->
 
+                                <button class="btn btn-outline-primary btn-lg rounded-pill shadow-lg " name="Login" value="login" type="submit">Login</button>
 
-                                    <hr>
-                                </div>
+                                <hr>
                                 <div class='py-2'>
                                     <div class="d-flex justify-content-evenly align-items-baseline">
                                         <p>Have an account ?</p>

@@ -13,19 +13,18 @@ class controller
     }
 
     //unique method
-    public function unique($uniqueProperty, string $table, string $where)
+    public function unique($uniqueProperty, string $table, string $whereFieldName, string $errorProperty)
     {
-
-
-
 
         // $qry = " SELECT * FROM $table WHERE $where = '$uniqueProperty}'";
         // $result = $this->mysqli->query($qry)->num_rows;
 
         $Db = new DBSelect;
-        $Db->select([])->from($table)->where(" $where = '$uniqueProperty'");
+        $Db->select([])->from($table)->where(" $whereFieldName = '$uniqueProperty'");
         $result = $Db->get()->num_rows;
-        return $result;
+        if ($result > 0) {
+            $this->{$errorProperty} = "Already Exist !";
+        }
     }
 
     // //valid email 
